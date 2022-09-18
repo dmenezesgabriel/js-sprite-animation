@@ -9,54 +9,19 @@ playerImage.src = "shadow_dog.png";
 
 const spriteWidth = 575; // width of image file divided by number of columns (frames)
 const spriteHeight = 523; // height of image file divided by number of rows (frames)
-const playerState = "run";
+let playerState = "idle";
 
 let gameFrame = 0;
 const staggerFrames = 5;
 const spriteAnimations = [];
 
-const animationStates = [
-  {
-    name: "idle",
-    frames: 7,
-  },
-  {
-    name: "jump",
-    frames: 7,
-  },
-  {
-    name: "fall",
-    frames: 7,
-  },
-  {
-    name: "run",
-    frames: 9,
-  },
-  {
-    name: "dizzy",
-    frames: 11,
-  },
-  {
-    name: "sit",
-    frames: 5,
-  },
-  {
-    name: "roll",
-    frames: 7,
-  },
-  {
-    name: "bite",
-    frames: 7,
-  },
-  {
-    name: "ko",
-    frames: 12,
-  },
-  {
-    name: "getHit",
-    frames: 4,
-  },
-];
+const getAnimationStates = await fetch("animation-states.json");
+const animationStates = await getAnimationStates.json();
+const dropdown = document.getElementById("animations");
+dropdown.addEventListener("change", (event) => {
+  playerState = event.target.value;
+});
+
 animationStates.forEach((state, index) => {
   let frames = {
     location: [],
@@ -67,6 +32,13 @@ animationStates.forEach((state, index) => {
     frames.location.push({ x: positionX, y: positionY });
   }
   spriteAnimations[state.name] = frames;
+
+  // Add options to html
+  let option = document.createElement("option");
+  option.value = state.name;
+  option.text = state.name;
+  console.log(option.value);
+  dropdown.appendChild(option);
 });
 // console.log(spriteAnimations);
 
